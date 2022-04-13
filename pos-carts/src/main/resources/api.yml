@@ -1,0 +1,84 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Carts
+  license:
+    name: MIT
+paths:
+  /cart:
+    get:
+      summary: List the cart
+      operationId: listCart
+      tags:
+        - cart
+      responses:
+        '200':
+          description: A cart, list of product and quantity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /cart/{productId}/{quantity}:
+    post:
+      summary: Add product(s) to the cart
+      operationId: addCart
+      tags:
+        - cart
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product to add
+          schema:
+            type: string
+        - name: quantity
+          in: path
+          required: true
+          description: The quantity of the product to add
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Item:
+      type: object
+      required:
+        - productId
+      properties:
+        productId:
+          type: string
+        quantity:
+          type: integer
+    Cart:
+      type: array
+      items:
+        $ref: "#/components/schemas/Item"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
