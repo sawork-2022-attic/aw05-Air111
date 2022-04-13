@@ -1,13 +1,11 @@
 package com.micropos.carts.repository;
 
 import com.micropos.carts.model.Item;
-import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Component
 public class Cart implements CartRepository {
 
@@ -16,6 +14,15 @@ public class Cart implements CartRepository {
     @Override
     public List<Item> items() {
         return items;
+    }
+
+    @Override
+    public Item getItem(String productId) {
+        for (Item item: items) {
+            if (item.getProductId().equals(productId))
+                return item;
+        }
+        return null;
     }
 
     @Override

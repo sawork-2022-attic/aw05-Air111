@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface CartService {
 
+    public Item getItem(String productId);
+
     public List<Item> items();
 
     public boolean add(String productId, int amount);

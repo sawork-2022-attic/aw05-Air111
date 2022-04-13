@@ -13,7 +13,7 @@ paths:
         - cart
       responses:
         '200':
-          description: A cart, list of product and quantity
+          description: A paged array of items
           content:
             application/json:
               schema:
@@ -24,10 +24,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /cart/{productId}/{quantity}:
+  /cart/{productId}/{amount}:
     post:
       summary: Add product(s) to the cart
-      operationId: addCart
+      operationId: addToCart
       tags:
         - cart
       parameters:
@@ -37,10 +37,10 @@ paths:
           description: The id of the product to add
           schema:
             type: string
-        - name: quantity
+        - name: amount
           in: path
           required: true
-          description: The quantity of the product to add
+          description: The amount of the product to add
           schema:
             type: integer
       responses:

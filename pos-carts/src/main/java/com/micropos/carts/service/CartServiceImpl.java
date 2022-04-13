@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.SplittableRandom;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -20,6 +21,11 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<Item> items() {
         return cartRepository.items();
+    }
+
+    @Override
+    public Item getItem(String productId) {
+        return cartRepository.getItem(productId);
     }
 
     @Override
