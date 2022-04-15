@@ -19,22 +19,27 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<Item> items() {
-        return cartRepository.items();
+    public Integer newCart() {
+        return cartRepository.newCart();
     }
 
     @Override
-    public Item getItem(String productId) {
-        return cartRepository.getItem(productId);
+    public List<Item> items(String userId) {
+        return cartRepository.items(userId);
     }
 
     @Override
-    public boolean add(String productId, int amount) {
-        return cartRepository.addItem(productId, amount);
+    public Item getItem(String userId, String productId) {
+        return cartRepository.getItem(userId, productId);
     }
 
     @Override
-    public boolean remove(String productId) {
-        return cartRepository.removeProduct(productId);
+    public boolean add(String userId, String productId, int amount) {
+        return cartRepository.addItem(userId, productId, amount);
+    }
+
+    @Override
+    public boolean remove(String userId, String productId) {
+        return cartRepository.removeProduct(userId, productId);
     }
 }

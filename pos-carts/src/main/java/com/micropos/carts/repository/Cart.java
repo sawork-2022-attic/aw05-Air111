@@ -1,6 +1,7 @@
 package com.micropos.carts.repository;
 
 import com.micropos.carts.model.Item;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,16 +10,28 @@ import java.util.List;
 @Component
 public class Cart implements CartRepository {
 
-    private List<Item> items = new ArrayList<>();
+    private List<List<Item>> carts = new ArrayList<>();
+
+    private Integer count = 0;
 
     @Override
-    public List<Item> items() {
-        return items;
+    public Integer newCart() {
+        if (count == Integer.MAX_VALUE)
+            return null;
+        count += 1;
+        if (carts.size() < count)
+            carts.add(new ArrayList<>());
+        return count;
     }
 
     @Override
-    public Item getItem(String productId) {
-        for (Item item: items) {
+    public List<Item> items(String userId) {
+        return carts.get(Integer.valueOf(userId));
+    }
+
+    @Override
+    public Item getItem(String userId, String productId) {
+        for (Item item: items(userId)) {
             if (item.getProductId().equals(productId))
                 return item;
         }
@@ -26,28 +39,30 @@ public class Cart implements CartRepository {
     }
 
     @Override
-    public boolean addItem(String productId, int amount) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getProductId().equals(productId)) {
-                int quantity = items.get(i).getQuantity();
+    public boolean addItem(String userId, String productId, int amount) {
+        List<Item> itemList = items(userId);
+        for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getProductId().equals(productId)) {
+                int quantity = itemList.get(i).getQuantity();
                 quantity += amount;
                 if (quantity < 0)
                     return false;
                 if (quantity == 0)
-                    items.remove(i);
+                    itemList.remove(i);
                 else
-                    items.get(i).setQuantity(quantity);
+                    itemList.get(i).setQuantity(quantity);
                 return true;
             }
         }
-        return items.add(new Item(productId, amount));
+        return itemList.add(new Item(productId, amount));
     }
 
     @Override
-    public boolean removeProduct(String productId) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getProductId().equals(productId)) {
-                items.remove(i);
+    public boolean removeProduct(String userId, String productId) {
+        List<Item> itemList = items(userId);
+        for (int i = 0; i < itemList.size(); i++) {
+            if (itemList.get(i).getProductId().equals(productId)) {
+                itemList.remove(i);
                 return true;
             }
         }

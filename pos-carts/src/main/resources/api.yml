@@ -6,11 +6,37 @@ info:
     name: MIT
 paths:
   /cart:
+    post:
+      summary: New cart
+      operationId: newCart
+      tags:
+        - cart
+      responses:
+        '200':
+          description: The id of a new empty cart
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: integer
+  /cart/{userId}:
     get:
       summary: List the cart
       operationId: listCart
       tags:
         - cart
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The cart id
+          schema:
+            type: string
       responses:
         '200':
           description: A paged array of items
@@ -24,13 +50,51 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /cart/{productId}/{amount}:
+  /cart/{userId}/{productId}:
+    delete:
+      summary: Remove the product from the cart
+      operationId: removeFromCart
+      tags:
+        - cart
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The cart id
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product to add
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paged array of items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /cart/{userId}/{productId}/{amount}:
     post:
       summary: Add product(s) to the cart
       operationId: addToCart
       tags:
         - cart
       parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The cart id
+          schema:
+            type: string
         - name: productId
           in: path
           required: true

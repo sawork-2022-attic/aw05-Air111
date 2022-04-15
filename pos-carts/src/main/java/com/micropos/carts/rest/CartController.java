@@ -3,7 +3,6 @@ package com.micropos.carts.rest;
 import com.micropos.carts.api.ApiUtil;
 import com.micropos.carts.api.CartApi;
 import com.micropos.carts.dto.ItemDto;
-import com.micropos.carts.dto.ItemDto;
 import com.micropos.carts.mapper.CartMapper;
 import com.micropos.carts.model.Item;
 import com.micropos.carts.repository.Cart;
@@ -35,8 +34,17 @@ public class CartController implements CartApi {
     }
 
     @Override
-    public ResponseEntity<List<ItemDto>> listCart() {
-        List<ItemDto> items = new ArrayList<>(cartMapper.toItemsDto(this.cartService.items()));
+    public ResponseEntity<Integer> newCart() {
+        Integer id = this.cartService.newCart();
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ItemDto>> listCart(String userId) {
+        List<ItemDto> items = new ArrayList<>(cartMapper.toItemsDto(this.cartService.items(userId)));
         if (items == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -44,13 +52,24 @@ public class CartController implements CartApi {
     }
 
     @Override
-    public ResponseEntity<ItemDto> addToCart(String productId, Integer amount) {
-        this.cartService.add(productId, amount.intValue());
-        ItemDto itemDto = cartMapper.toItemDto(this.cartService.getItem(productId));
+    public ResponseEntity<ItemDto> addToCart(String userId, String productId, Integer amount) {
+        this.cartService.add(userId, productId, amount.intValue());
+        ItemDto itemDto = cartMapper.toItemDto(this.cartService.getItem(userId, productId));
         if (itemDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(itemDto, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<List<ItemDto>> removeFromCart(String userId, String productId) {
+        if (this.cartService.remove(userId, productId) == false) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        List<ItemDto> items = new ArrayList<>(cartMapper.toItemsDto(this.cartService.items(userId)));
+        if (items == null) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
 }
