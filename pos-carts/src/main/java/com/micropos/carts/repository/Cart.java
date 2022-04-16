@@ -2,6 +2,8 @@ package com.micropos.carts.repository;
 
 import com.micropos.carts.model.Item;
 import io.swagger.models.auth.In;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class Cart implements CartRepository {
     }
 
     @Override
+    @Cacheable(value = "carts", key = "#userId")
     public List<Item> items(String userId) {
         return carts.get(Integer.valueOf(userId));
     }
@@ -39,6 +42,7 @@ public class Cart implements CartRepository {
     }
 
     @Override
+    @CacheEvict(value = "carts", key = "#userId")
     public boolean addItem(String userId, String productId, int amount) {
         List<Item> itemList = items(userId);
         for (int i = 0; i < itemList.size(); i++) {
@@ -58,6 +62,7 @@ public class Cart implements CartRepository {
     }
 
     @Override
+    @CacheEvict(value = "carts", key = "#userId")
     public boolean removeProduct(String userId, String productId) {
         List<Item> itemList = items(userId);
         for (int i = 0; i < itemList.size(); i++) {
