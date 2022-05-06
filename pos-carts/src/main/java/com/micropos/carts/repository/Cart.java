@@ -21,9 +21,9 @@ public class Cart implements CartRepository {
         if (count == Integer.MAX_VALUE)
             return null;
         count += 1;
-        if (carts.size() < count)
+        while (carts.size() < count)
             carts.add(new ArrayList<>());
-        return count;
+        return count - 1;
     }
 
     @Override
