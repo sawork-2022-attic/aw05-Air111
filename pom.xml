@@ -4,6 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
+        <module>pos-api</module>
         <module>pos-products</module>
         <module>pos-carts</module>
         <module>pos-discovery</module>
@@ -70,6 +71,12 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>com.micropos</groupId>
+                <artifactId>pos-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -92,9 +99,6 @@
                                 <goal>generate</goal>
                             </goals>
                             <configuration>
-                                <inputSpec>
-                                    ${project.basedir}/src/main/resources/api.yml
-                                </inputSpec>
                                 <generatorName>spring</generatorName>
                                 <library>spring-boot</library>
                                 <configOptions>

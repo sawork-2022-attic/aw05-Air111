@@ -1,16 +1,13 @@
 package com.micropos.carts.rest;
 
-import com.micropos.carts.api.ApiUtil;
-import com.micropos.carts.api.CartApi;
-import com.micropos.carts.dto.ItemDto;
+import com.micropos.api.ApiUtil;
+import com.micropos.api.CartApi;
+import com.micropos.dto.ItemDto;
 import com.micropos.carts.mapper.CartMapper;
 import com.micropos.carts.model.Item;
 import com.micropos.carts.repository.Cart;
 import com.micropos.carts.service.CartService;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

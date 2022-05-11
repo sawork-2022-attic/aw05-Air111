@@ -1,6 +1,6 @@
 package com.micropos.carts.mapper;
 
-import com.micropos.carts.dto.ItemDto;
+import com.micropos.dto.ItemDto;
 import com.micropos.carts.model.Item;
 import com.micropos.carts.repository.Cart;
 import org.mapstruct.Mapper;

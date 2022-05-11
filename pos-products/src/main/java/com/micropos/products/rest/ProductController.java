@@ -1,14 +1,11 @@
 package com.micropos.products.rest;
 
-import com.micropos.products.api.ApiUtil;
-import com.micropos.products.api.ProductsApi;
-import com.micropos.products.dto.ProductDto;
+import com.micropos.api.ApiUtil;
+import com.micropos.api.ProductsApi;
+import com.micropos.dto.ProductDto;
 import com.micropos.products.mapper.ProductMapper;
 import com.micropos.products.service.ProductService;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
